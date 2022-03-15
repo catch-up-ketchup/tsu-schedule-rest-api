@@ -1,6 +1,7 @@
-import datetime
 from typing import List, Any, Callable
+from urllib.parse import unquote_to_bytes, quote
 
+import datetime
 import bs4
 
 
@@ -116,3 +117,18 @@ def transform_subject(subject: str) -> str:
     index = subject.find('(')
     subject_name = subject[:index] if index != -1 else subject
     return subject_name.strip()
+
+
+def quote_text(text, reverse=False):
+    """
+    Данная функция предназнчена для шифровки / расшифровки текста, например:
+        'ПБ' -> '%D0%9F%D0%91'
+        '%D0%9F%D0%91', True -> 'ПБ'
+
+    :param text: обычный / зашифрованный текст
+    :param reverse: True or False
+    :return: зашифрованный / обычный текст
+    """
+    if reverse:
+        return unquote_to_bytes(text).decode('utf-8')
+    return quote(text, safe='_-=()&?:/;%"')

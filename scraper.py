@@ -1,6 +1,7 @@
 import bs4
 import requests
 
+from typing import List
 from bs4 import BeautifulSoup
 from user_agent import generate_user_agent
 
@@ -56,7 +57,7 @@ def is_date(row: bs4.Tag) -> bool:
     return bool(len(columns) % 2)
 
 
-def get_schedule(group: str) -> dict:
+def get_schedule(group: str) -> List:
     """
     Данная функция формирует словарь с расписанием, она работает следующим образом:
         1) Отправляет запрос на сайт
@@ -72,7 +73,6 @@ def get_schedule(group: str) -> dict:
     """
     response = requests.get(
         f'http://schedule.tsu.tula.ru/?group={group}',
-        timeout=5,
         headers={'User-Agent': generate_user_agent()}
     )
 
@@ -94,16 +94,9 @@ def get_schedule(group: str) -> dict:
             schedule = list(sorted(result, key=lambda item: transform_date(item['day']['date'])))
             shelve_storage.update_schedule(group, schedule)
 
-            return {
-                'schedule': schedule,
-                'group': group
-            }
-
+            return schedule
     try:
-        return {
-            'schedule': shelve_storage.get_schedule(group),
-            'group': group
-        }
+        return shelve_storage.get_schedule(group)
     except Exception:
         print('there is no such group in storage')
 
