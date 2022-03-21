@@ -71,10 +71,13 @@ def get_schedule(group: str) -> List:
     :param group: номер группы
     :return: словарь с расписанием
     """
-    response = requests.get(
-        f'http://schedule.tsu.tula.ru/?group={group}',
-        headers={'User-Agent': generate_user_agent()}
-    )
+    try:
+        response = requests.get(
+            f'http://schedule.tsu.tula.ru/?group={group}',
+            headers={'User-Agent': generate_user_agent()}
+        )
+    except Exception:
+        return shelve_storage.get_schedule(group)
 
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, features='html.parser')
@@ -95,9 +98,5 @@ def get_schedule(group: str) -> List:
             shelve_storage.update_schedule(group, schedule)
 
             return schedule
-    try:
-        return shelve_storage.get_schedule(group)
-    except Exception:
-        print('there is no such group in storage')
 
     raise Exception('error')
