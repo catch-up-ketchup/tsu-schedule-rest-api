@@ -57,6 +57,7 @@ def get_subgroup(subject: str) -> str:
         'Инженерная геодезия и основы топографии (Лабораторные работы)(2 пг)' -> '2'
         'Практикум на электронных вычислительных машинах (Лабораторные работы)(2 подгруппа)' -> '2'
         'Инженерная геодезия и основы топографии (Лабораторные работы)(2 подгруппа)' -> '2'
+        'Оценка бизнеса (Практические занятия)(1пг)' -> '1'
 
     :param subject: полное название предмета, что в скобках
     :return: подгруппа (если она есть)
@@ -68,8 +69,9 @@ def get_subgroup(subject: str) -> str:
     key_words = ['подгруппа', 'пг']
     indexes = [subject.find(key_word) for key_word in key_words]
     index = get_item(indexes, lambda item: item != -1)
+    temp = subject[:index]
 
-    return subject[index - 2] if index else ''
+    return subject[temp.rfind('(') + 1] if index else ''
 
 
 def get_type(subject: str) -> dict:
