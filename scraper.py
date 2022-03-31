@@ -17,7 +17,7 @@ def create_daily_schedule_item(row: bs4.Tag) -> dict:
     :return: словарь с информацией
     """
     subject = get_text_safely(row, 'span.disc')
-    auditorium = get_text_safely(row, 'span.aud a').strip()
+    auditorium = get_text_safely(row, 'span.aud > a').strip()
     time = get_text_safely(row, 'td.time').split('-')
     return {
         'subject': transform_subject(subject),

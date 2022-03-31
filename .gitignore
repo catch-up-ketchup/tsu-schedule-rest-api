@@ -1,3 +1,4 @@
 .idea/
 __pycache__/
 shelve_storage/storage
+venv/
