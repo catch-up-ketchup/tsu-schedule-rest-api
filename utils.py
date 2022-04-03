@@ -97,6 +97,9 @@ def get_type(subject: str) -> dict:
     elif 'Практические занятия' in subject:
         result['ru'] = 'Практические занятия'
         result['en'] = 'practice'
+    elif 'Практ. клинические' in subject:
+        result['ru'] = 'Практ. клинические'
+        result['en'] = 'practice'
     elif 'Лекционные занятия' in subject:
         result['ru'] = 'Лекционные занятия'
         result['en'] = 'lecture'
@@ -133,4 +136,4 @@ def quote_text(text, reverse=False):
     """
     if reverse:
         return unquote_to_bytes(text).decode('utf-8')
-    return quote(text, safe='_-=()&?:/;%"')
+    return quote(text, safe='_-=/()&?:;%"')

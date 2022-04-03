@@ -85,7 +85,9 @@ def get_schedule(group: str) -> List:
 
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, features='html.parser')
+        
         data = soup.select_one('#results table.tt+.time+table.tt')
+        data = data if data else soup.select_one('#results .time+table.tt')
 
         if data:
             rows = data.select('tr')[::-1]

@@ -1,6 +1,6 @@
 import json
 
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS, cross_origin
 
 from scraper import get_schedule
@@ -19,9 +19,10 @@ def say_hello():
     return 'Hello! It is simple API for tsu schedule :)'
 
 
-@application.route('/schedule/<string:group>', methods=['GET'])
+@application.route('/schedule/', methods=['GET'])
 @cross_origin(origin='https://tsu-schedule.space', headers=['Content-Type', 'Authorization'])
-def send_schedule(group):
+def send_schedule():
+    group = request.args.get('group')
     response_data = {
         'schedule': get_schedule(group),
         'group': quote_text(group, reverse=True)
@@ -29,9 +30,9 @@ def send_schedule(group):
     return json.dumps(response_data)
 
 
-@application.route('/test-schedule/<string:group>', methods=['GET'])
+@application.route('/test-schedule/', methods=['GET'])
 @cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
-def send_test_schedule(group):
+def send_test_schedule():
     return json.dumps(test_schedule)
 
 
