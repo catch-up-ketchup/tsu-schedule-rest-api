@@ -72,8 +72,12 @@ def get_schedule(group: str) -> List:
     :return: словарь с расписанием
     """
     try:
+        connection_timeout = 2
+        reading_timeout = 4.5
+
         response = requests.get(
             f'http://schedule.tsu.tula.ru/?group={group}',
+            timeout=(connection_timeout, reading_timeout),
             headers={'User-Agent': generate_user_agent()}
         )
     except Exception:
